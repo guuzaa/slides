@@ -32,7 +32,7 @@ jobs:
         run: nci
 
       - name: Build
-        run: nr build rust-pattern-match.md --base /${{github.event.repository.name}}/ --out rust-pattern-match
+        run: nr build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

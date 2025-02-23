@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "slidev build",
+    "build": "slidev build rust-pattern-match.md --base /slides/rust-pattern-match/ --out dist/rust-pattern-match",
     "dev": "slidev --open",
     "export": "slidev export"
   },
