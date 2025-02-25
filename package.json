@@ -5,7 +5,8 @@
   "scripts": {
     "build": "slidev build rust-pattern-match.md --base /slides/rust-pattern-match/ --out dist/rust-pattern-match",
     "dev": "slidev --open",
-    "export": "slidev export"
+    "export": "slidev export",
+    "format": "slidev format"
   },
   "dependencies": {
     "@slidev/cli": "^51.0.2",

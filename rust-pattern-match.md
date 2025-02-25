@@ -3,7 +3,7 @@
 theme: seriph
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: https://cover.sli.dev
+# background: https://cover.sli.dev
 # some information about your slides (markdown enabled)
 title: Rust 的流程控制与模式匹配
 info: |
@@ -17,16 +17,16 @@ drawings:
 transition: slide-left
 # enable MDC Syntax: https://sli.dev/features/mdc
 mdc: true
-color: stone-light
+lineNumbers: true
 ---
 
 # Rust 流程控制与模式匹配
 
-安全性与表达力并重的系统级编程
-
 <br>
 
-2025.02.23
+让每个人都能写出可靠又高效的程序！
+
+<br>
 
 <!--
 The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
@@ -34,24 +34,251 @@ The last comment block of each slide will be treated as slide notes. It will be 
 
 ---
 transition: fade-out
-color: stone-light
 ---
 
-# Why Rust Control Flow?
+# 流程控制 - if/else 判断数字正负
 
-Rust 控制流核心设计理念
+````md magic-move
 
-- **表达式优先**：所有控制结构返回可计算值
-- **模式匹配集成**：编译时穷尽性检查
-- **内存安全保证**：所有权系统与流程控制结合
+```c
+// C 
+int n = 5;
+
+if (n < 0) {
+    printf("%d is negative", n);
+} else if (n > 0) {
+    printf("%d is positive", n);
+} else {
+    printf("%d is zero", n);
+}
+```
+
+```rust 
+// Rust
+let n = 5;
+
+if n < 0 {
+    print!("{} is negative", n);
+} else if n > 0 {
+    print!("{} is positive", n);
+} else {
+    print!("{} is zero", n);
+}
+```
+````
+
+<br>
+
+<v-click> if 条件<b>没有括号</b>且<b>花括号不可以省略</b> </v-click>
+
+---
+transition: fade-out
+---
+
+# 流程控制 - if/else 条件类型
+
+<br>
+
+````md magic-move
+
+```c
+// C 
+int condition = 10;
+
+// 在 if 条件中使用非布尔类型 (整数) - C 语言允许自动转换
+if (condition) {
+    printf("condition is truthy\n");
+} else {
+    printf("condition is falsy\n");
+}
+```
+
+```rust 
+// Rust
+let condition = 10;
+
+// 编译器会在这里报错
+if condition { 
+    println!("condition is truthy");
+} else {
+    println!("condition is falsy");
+}
+```
+
+```rust 
+// Rust
+let condition = 10;
+
+// 显式地将整数转换为布尔类型 (通过比较)
+if condition != 0 {
+    println!("condition is truthy (not zero)");
+} else {
+    println!("condition is falsy (zero)");
+}
+```
+````
+
+<br>
+
+<v-clicks every="2"> 
+
+- 条件为布尔类型
+- 非布尔类型不会自动转换为布尔类型 
+
+</v-clicks>
+
+---
+transition: fade-out
+---
+
+# 表达式 V.S. 语句
+
+在 Rust 中，表达式（Expression）和语句（Statement）是两个不同的概念：
+
+- **语句**：计算但不返回值
+```rust
+let a = 10;
+let mut b = a * 10;
+```
+
+- **表达式**：计算并产生一个值，是语句的组成部分
 
 ```rust
-// 表达式示例
-let status = if user.is_admin() {
-    AccessLevel::Admin
-} else {
-    AccessLevel::User // 必须返回相同类型
-};
+10
+a * 10
+
+fn times_ten(a: i32) -> i32 {
+  a * 10
+}
+
+{
+  let x = 3;
+  x
+}
+```
+
+<v-clicks every="2">
+
+- 语句往往由表达式加 `;` 结尾
+- 代码块返回值为最后一个表达式的值
+
+</v-clicks>
+
+---
+transition: fade-out
+---
+
+# 表达式返回空元组 `()` 
+
+````md magic-move
+```c
+#define MAX_NUM (100)
+
+int a = 10;
+int b = a = 11; // C 语言赋值语句会返回赋值结果
+if (a = MAX_NUM) {
+    printf("a is equal to MAX_NUM");
+}
+```
+
+```rust
+const MAX_NUM: i32 = 100;
+let mut a = 10;
+let b = a = 11; // Rust 语句会返回 () - 空元组
+if a = MAX_NUM { // 条件类型是 () 编译器在这里报错
+  println!("a is equal to MAX_NUM");
+}
+```
+````
+
+---
+transition: fade-out
+---
+
+# 三目运算符
+
+
+```c
+// C
+int a = condition ? 2 : do_something();
+```
+
+```python
+# Python
+a = 2 if condition else do_something()
+```
+
+```rust
+// Rust
+let a = if condition { 2 } else { do_something() };
+```
+
+<br>
+<v-clicks every="3">
+
+- 代码块返回值为最后一个表达式的值
+- 代码块返回值为最后一个表达式的值
+- 代码块返回值为最后一个表达式的值
+
+</v-clicks>
+
+---
+transition: fade-out
+---
+
+# 流程控制 - while
+
+```rust {all|3}
+let mut n = 1;
+
+while n < 101 {
+    if n % 15 == 0 {
+        println!("fizzbuzz");
+    } else if n % 3 == 0 {
+        println!("fizz");
+    } else if n % 5 == 0 {
+        println!("buzz");
+    } else {
+        println!("{}", n);
+    }
+
+    n += 1;
+}
+```
+
+---
+transition: fade-out
+---
+
+# 流程控制 - for
+
+```rust {all|1}
+for n in 1..101 {
+    if n % 15 == 0 {
+        println!("fizzbuzz");
+    } else if n % 3 == 0 {
+        println!("fizz");
+    } else if n % 5 == 0 {
+        println!("buzz");
+    }
+}
+```
+
+---
+transition: fade-out
+---
+
+# 流程控制 - match 
+
+
+```rust {all|3-6}
+let n = 5;
+
+match n {
+    n if n < 0 => print!("{} is negative", n),
+    n if n > 0 => print!("{} is positive", n),
+    _ => print!("{} is zero", n),
+}
 ```
 
 ---
